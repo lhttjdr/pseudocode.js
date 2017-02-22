@@ -161,9 +161,13 @@ TextEnvironment.prototype.renderToHTML = function() {
             this._html.putText(text);
             break;
         case 'math':
-            if (!katex) {
+            if (typeof katex =="undefined" || !katex) {
                 try { katex = require('katex'); }
-                catch(e) { throw 'katex is required to render math'; }
+                catch(e) {
+                 /*throw 'katex is required to render math';*/
+                 this._html.putSpan('$'+text+'$');
+                 break;
+                }
             }
             var mathHTML = katex.renderToString(text);
             this._html.putSpan(mathHTML);
